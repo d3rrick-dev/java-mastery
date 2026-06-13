@@ -1,5 +1,9 @@
 package phase8;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryMXBean;
+import java.lang.management.MemoryUsage;
+
 /**
  * LESSON 10: MEMORY MANAGEMENT
  *

@@ -126,9 +126,9 @@ public class Lesson11_HashSet {
         System.out.println("Array 2: " + java.util.Arrays.toString(arr2));
 
         Set<Integer> intersection2 = new HashSet<>();
-        Set<Integer> set1 = new HashSet<>();
+        Set<Integer> set4 = new HashSet<>();
         for (int num : arr1) {
-            set1.add(num);
+            set4.add(num);
         }
         for (int num : arr2) {
             if (set1.contains(num)) {

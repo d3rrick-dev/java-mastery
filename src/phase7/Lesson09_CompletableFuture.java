@@ -199,17 +199,17 @@ public class Lesson09_CompletableFuture {
         // ============================================================
         System.out.println("--- Example 6: handle() Method ---\n");
 
-        CompletableFuture<String> handleFuture = CompletableFuture.supplyAsync(() -> {
-            throw new RuntimeException("Error in supply");
-        })
-        .handle((result, ex) -> {
-            if (ex != null) {
-                return "Recovered from: " + ex.getMessage();
-            }
-            return result;
-        });
+//        CompletableFuture<String> handleFuture = CompletableFuture.supplyAsync(() -> {
+//            throw new RuntimeException("Error in supply");
+//        })
+//        .handle((result, ex) -> {
+//            if (ex != null) {
+//                return "Recovered from: " + ex.getMessage();
+//            }
+//            return result;
+//        });
 
-        System.out.println("Handle result: " + handleFuture.get() + "\n");
+//        System.out.println("Handle result: " + handleFuture.get() + "\n");
 
         // ============================================================
         // EXAMPLE 7: thenCompose for dependent async operations

@@ -45,13 +45,10 @@ public class Lesson06_LazyEvaluation {
                     System.out.println("  Filtering: " + emp.name());
                     return emp.active();
                 })
-                .map(emp -> {
-                    System.out.println("  Mapping: " + emp.name());
-                    return emp.name().toUpperCase();
-                })
-                .filter(name -> {
-                    System.out.println("  Filtering name: " + name);
-                    return name.length() > 3;
+                .peek(emp -> System.out.println("  Mapping: " + emp.name()))
+                .filter(employee -> {
+                    System.out.println("  Filtering name: " + employee.name());
+                    return employee.name().length() > 3;
                 });
 
         System.out.println("Pipeline created. No filtering or mapping happened yet!");

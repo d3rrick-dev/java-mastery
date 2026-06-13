@@ -214,6 +214,7 @@ Each phase contains detailed lesson files with:
 - [Lesson02: Records](src/phase9/Lesson02_Records.java)
 - [Lesson03: Enums](src/phase9/Lesson03_Enums.java)
 - [Lesson04: Generics](src/phase9/Lesson04_Generics.java)
+- [Lesson04: Generics (Advanced)](src/phase9/Lesson04_Generics_Advanced.java)
 - [Lesson05: Wildcards](src/phase9/Lesson05_Wildcards.java)
 - [Lesson06: Reflection](src/phase9/Lesson06_Reflection.java)
 - [Lesson07: Annotations](src/phase9/Lesson07_Annotations.java)

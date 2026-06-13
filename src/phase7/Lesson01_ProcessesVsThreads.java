@@ -141,7 +141,7 @@ public class Lesson01_ProcessesVsThreads {
 
         Thread currentThread = Thread.currentThread();
         System.out.println("Current thread: " + currentThread.getName());
-        System.out.println("Thread ID: " + currentThread.getId());
+        System.out.println("Thread ID: " + currentThread.threadId());
         System.out.println("Thread priority: " + currentThread.getPriority());
         System.out.println("Thread state: " + currentThread.getState());
         System.out.println("Is daemon: " + currentThread.isDaemon());

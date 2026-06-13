@@ -75,7 +75,7 @@ import java.util.*;
 
 public class Lesson24_Immutability {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         System.out.println("=== IMMUTABILITY ===\n");
 
         // ============================================================
@@ -106,7 +106,7 @@ public class Lesson24_Immutability {
         System.out.println("--- Example 3: Immutable with Mutable Fields ---\n");
 
         Date birthDate = new Date();
-        ImmutablePersonWithDate personWithDate = new ImmutablePersonWithDate("Charlie", birthDate);
+        ImmutablePersonWithDate personWithDate = new ImmutablePersonWithDate("Charlie", 20 , birthDate);
 
         System.out.println("Birth date: " + personWithDate.getBirthDate());
 
@@ -243,8 +243,9 @@ public class Lesson24_Immutability {
         private final int age;
         private final Date birthDate;  // Mutable field!
 
-        public ImmutablePersonWithDate(String name, Date birthDate) {
+        public ImmutablePersonWithDate(String name, int age, Date birthDate) {
             this.name = name;
+            this.age = age;
             this.birthDate = new Date(birthDate.getTime());  // Defensive copy
         }
 

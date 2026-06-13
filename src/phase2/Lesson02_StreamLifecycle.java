@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * LESSON 2: Stream Lifecycle
@@ -36,7 +37,7 @@ public class Lesson02_StreamLifecycle {
         System.out.println("From collection: " + stream1.count());
 
         // From List.of() (Java 9+)
-        java.util.stream.Stream<Employee> stream2 = List.of(
+        java.util.stream.Stream<Employee> stream2 = Stream.of(
                 new Employee(1, "Alice", "Engineering", new BigDecimal("95000"), 30, LocalDate.of(2020, 1, 15), true)
         );
         System.out.println("From List.of: " + stream2.count());
@@ -62,8 +63,8 @@ public class Lesson02_StreamLifecycle {
         System.out.println("\n--- 2. Intermediate Operations (Lazy) ---");
 
         // These DON'T execute until a terminal operation is called
-        java.util.stream.Stream<Employee> lazyStream = employees.stream()
-                .filter(emp -> emp.active())           // Intermediate
+        java.util.stream.Stream<String> lazyStream = employees.stream()
+                .filter(Employee::active)           // Intermediate
                 .filter(emp -> "Engineering".equals(emp.department()))  // Intermediate
                 .map(emp -> emp.name().toUpperCase());  // Intermediate
 

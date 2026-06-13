@@ -78,12 +78,12 @@ public class Lesson08_MethodReferences {
         System.out.println("\n--- 4. Constructor Reference ---");
 
         // Supplier<Employee> that creates new Employee
-        java.util.function.Supplier<Employee> employeeSupplier = Employee::new;
+        java.util.function.Supplier<Employee> employeeSupplier = () -> createSampleEmployees().getFirst();
         Employee newEmp = employeeSupplier.get();
         System.out.println("New employee: " + newEmp.name());
 
         // Function with parameters
-        java.util.function.Function<String, Integer> stringLength = String::new; // Not useful, but valid
+        // java.util.function.Function<String, Integer> stringLength = String::new; // Not useful, but valid
         // Better example:
         java.util.function.Function<String, java.math.BigDecimal> bigDecimalSupplier = java.math.BigDecimal::new;
         System.out.println("BigDecimal: " + bigDecimalSupplier.apply("123.45"));

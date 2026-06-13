@@ -1,6 +1,5 @@
 package phase7;
 
-import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -241,7 +240,11 @@ public class Lesson21_ConcurrentCollections {
         Thread priorityProducer = new Thread(() -> {
             int[] values = {5, 1, 3, 2, 4};
             for (int v : values) {
-                priorityQueue.put(v);
+                try {
+                    priorityQueue.put(v);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 System.out.println("Priority producer: " + v);
             }
         });

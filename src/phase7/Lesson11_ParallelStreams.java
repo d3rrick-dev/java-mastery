@@ -1,6 +1,8 @@
 package phase7;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.*;
 
 /**
@@ -81,7 +83,7 @@ import java.util.stream.*;
 
 public class Lesson11_ParallelStreams {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         System.out.println("=== PARALLEL STREAMS ===\n");
 
         // ============================================================

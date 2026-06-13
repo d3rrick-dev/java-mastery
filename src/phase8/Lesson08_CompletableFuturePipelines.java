@@ -89,10 +89,10 @@ public class Lesson08_CompletableFuturePipelines {
             System.out.println("Fetching user ID");
             return "user-123";
         })
-        .thenCompose(userId -> fetchProfileAsync(userId))
-        .thenCompose(profile -> fetchOrdersAsync(profile))
+        .thenCompose(Lesson08_CompletableFuturePipelines::fetchProfileAsync)
+        .thenCompose(Lesson08_CompletableFuturePipelines::fetchOrdersAsync)
         .thenApply(orders -> {
-            System.out.println("Processing " + orders.size() + " orders");
+//            System.out.println("Processing " + orders.size() + " orders");
             return "Done";
         });
 

@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -112,6 +113,7 @@ public class Lesson02_Partitioning {
                         Employee::active,
                         Collectors.maxBy((e1, e2) -> e1.salary().compareTo(e2.salary()))
                 ));
+
         System.out.println("Highest paid active: " +
                 highestPaidByActive.get(true).map(e -> e.name() + " ($" + e.salary() + ")").orElse("N/A"));
         System.out.println("Highest paid inactive: " +

@@ -255,10 +255,14 @@ public class Lesson22_ProducerConsumerPattern {
         BlockingQueue<PriorityTask> priorityQueue = new PriorityBlockingQueue<>();
 
         Thread priorityProducer = new Thread(() -> {
-            priorityQueue.put(new PriorityTask("Low", 3));
-            priorityQueue.put(new PriorityTask("High", 1));
-            priorityQueue.put(new PriorityTask("Medium", 2));
-            priorityQueue.put(new PriorityTask("Critical", 0));
+            try {
+                priorityQueue.put(new PriorityTask("Low", 3));
+                priorityQueue.put(new PriorityTask("High", 1));
+                priorityQueue.put(new PriorityTask("Medium", 2));
+                priorityQueue.put(new PriorityTask("Critical", 0));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         Thread priorityConsumer = new Thread(() -> {

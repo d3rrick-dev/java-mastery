@@ -1,5 +1,9 @@
 package phase7;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+
 /**
  * LESSON 14: DEADLOCKS
  *

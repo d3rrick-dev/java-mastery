@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 /**
  * LESSON 5: Function<T, R>
@@ -68,9 +69,9 @@ public class Lesson05_Function {
         System.out.println("Employee salary as string: " + empToSalaryString.apply(employees.get(0)));
 
         // compose() - apply second function first, then first
-        Function<String, Integer> length = String::length;
+        Function<String, Integer> length = Integer::parseInt;
         Function<Integer, String> toString = Object::toString;
-        Function<String, String> lengthAsString = length.compose(toString);
+        Function<String, String> lengthAsString = toString.compose(length);
         // compose means: toString.apply(length.apply("Hello")) = "5"
 
         // ============================================
@@ -96,17 +97,17 @@ public class Lesson05_Function {
         System.out.println("\n--- 4. UnaryOperator ---");
 
         java.util.function.UnaryOperator<String> toUpperCase = String::toUpperCase;
-        java.util.function.UnaryOperator<String> addPrefix = s -> "Mr./Ms. " + s;
-
-        // Chain UnaryOperators
-        java.util.function.UnaryOperator<String> formalName = toUpperCase.andThen(addPrefix);
-        // or: addPrefix.compose(toUpperCase)
-
-        List<String> formalNames = employees.stream()
-                .map(Employee::name)
-                .map(formalName)
-                .toList();
-        System.out.println("Formal names: " + formalNames);
+//        java.util.function.UnaryOperator<String> addPrefix = (_) -> "Mr./Ms. ";
+//
+//        // Chain UnaryOperators
+//        java.util.function.UnaryOperator<String> formalName = toUpperCase.andThen(addPrefix);
+//        // or: addPrefix.compose(toUpperCase)
+//
+//        List<String> formalNames = employees.stream()
+//                .map(Employee::name)
+//                .map(formalName)
+//                .toList();
+//        System.out.println("Formal names: " + formalNames);
 
         // ============================================
         // 5. CODING CHALLENGE EXAMPLE

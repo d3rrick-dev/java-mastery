@@ -133,7 +133,7 @@ public class Lesson07_Supplier {
         System.out.println("Generated test employees:");
         java.util.stream.Stream.generate(testDataSupplier)
                 .limit(3)
-                .forEach(emp -> System.out.println("  " + emp));
+                .forEach(emp3 -> System.out.println("  " + emp3));
 
         // ============================================
         // 7. COMMON MISTAKES

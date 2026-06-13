@@ -167,7 +167,11 @@ public class Lesson08_Future {
             int count = 0;
             while (count < 10 && !Thread.currentThread().isInterrupted()) {
                 System.out.println("Working... " + count);
-                Thread.sleep(500);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 count++;
             }
         });

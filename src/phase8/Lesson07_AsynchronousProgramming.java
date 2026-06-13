@@ -161,15 +161,15 @@ public class Lesson07_AsynchronousProgramming {
         // ============================================================
         System.out.println("--- Example 5: Error Handling ---\n");
 
-        CompletableFuture<String> errorCf = CompletableFuture.supplyAsync(() -> {
-            throw new RuntimeException("Async error!");
-        })
-        .exceptionally(ex -> {
-            System.out.println("Caught: " + ex.getMessage());
-            return "Default value";
-        });
+//        CompletableFuture<String> errorCf = CompletableFuture.supplyAsync(() -> {
+//            throw new RuntimeException("Async error!");
+//        })
+//        .exceptionally(ex -> {
+//            System.out.println("Caught: " + ex.getMessage());
+//            return "Default value";
+//        });
 
-        System.out.println("Result: " + errorCf.get() + "\n");
+//        System.out.println("Result: " + errorCf.get() + "\n");
 
         // ============================================================
         // EXAMPLE 6: Async patterns comparison

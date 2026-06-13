@@ -234,17 +234,79 @@ public class Lesson02_SpringConfiguration {
                    }
             
                INTERVIEW QUESTION:
-                   "How do you validate configuration at startup? What happens
-                   if validation fails?"
-            
-               COMMON MISTAKES:
-                   - Not validating configuration
-                   - Using assertions instead of proper validation
-                   - Not handling validation errors gracefully
-            
-            ─────────────────────────────────────────────────────────────────────
-            
-            SUMMARY:
+                    "How do you validate configuration at startup? What happens
+                    if validation fails?"
+             
+                COMMON MISTAKES:
+                    - Not validating configuration
+                    - Using assertions instead of proper validation
+                    - Not handling validation errors gracefully
+             
+             ─────────────────────────────────────────────────────────────────────
+             
+             6. GENERIC CONFIGURATION PATTERNS
+                ─────────────────────────────────────────────────────────────────────
+                CONCEPT:
+                Generic configuration patterns allow type-safe, reusable configuration
+                for different types of beans and services.
+             
+                WHY IT EXISTS:
+                - Type safety in configuration
+                - Reusable configuration templates
+                - Compile-time validation
+                - Reduced boilerplate
+             
+                SIMPLE EXAMPLE:
+                    // Generic repository configuration
+                    @Configuration
+                    public class RepositoryConfig {
+                        @Bean
+                        public <T> Repository<T> repository(Class<T> entityClass) {
+                            return new JpaRepository<>(entityClass);
+                        }
+                    }
+                    
+                    // Generic cache configuration
+                    @Configuration
+                    public class CacheConfig {
+                        @Bean
+                        public <K, V> Cache<K, V> cache(String name, Class<V> valueType) {
+                            return new ConcurrentMapCache(name);
+                        }
+                    }
+             
+                REAL-WORLD BACKEND EXAMPLE:
+                    A multi-tenant system uses generic configuration to create
+                    tenant-specific beans:
+                    
+                    @Configuration
+                    public class TenantConfig {
+                        @Bean
+                        @Scope("tenant")
+                        public <T> ServiceClient<T> serviceClient(
+                                @Value("${tenant.id}") String tenantId,
+                                Class<T> serviceType) {
+                            return new TenantAwareClient<>(tenantId, serviceType);
+                        }
+                    }
+             
+                INTERVIEW QUESTION:
+                    "How would you create a generic configuration for multiple
+                    similar services? What are the benefits of type-safe configuration?"
+             
+                COMMON MISTAKES:
+                    - Not understanding type erasure in configuration
+                    - Using raw types in @Bean methods
+                    - Not considering scope with generic beans
+             
+                PERFORMANCE & SCALABILITY:
+                    - Generic beans have same performance as concrete beans
+                    - Type safety prevents runtime errors
+                    - Consider caching for expensive generic operations
+             
+             ─────────────────────────────────────────────────────────────────────
+             
+             SUMMARY:
             Spring Configuration is the backbone of application flexibility.
             Mastering @Configuration, @Bean, and @ConfigurationProperties is
             essential for building production-ready, maintainable applications.

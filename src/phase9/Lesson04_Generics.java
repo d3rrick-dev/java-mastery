@@ -2,6 +2,8 @@ package phase9;
 
 import java.util.*;
 
+import static phase9.Lesson04_Generics.GenericUtil.addNumbers;
+
 /**
  * LESSON 4: GENERICS
  *
@@ -103,7 +105,7 @@ public class Lesson04_Generics {
         List<Number> numberList = List.of(1, 2.2, 3);
 
         // ? extends T - producer (read only)
-        double sum = sumOfNumbers(intList);
+        double sum = GenericUtil.sumOfNumbers(intList);
         System.out.println("Sum of ints: " + sum);
 
         // ? super T - consumer (write only)

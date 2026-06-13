@@ -128,13 +128,13 @@ public class Lesson05_ForkJoinFrameworkDeepDive {
             tasks.add(new SumTask(data, i, end));
         }
 
-        java.util.List<Future<Long>> results = invokePool.invokeAll(tasks);
+//        java.util.List<Future<Long>> results = invokePool.invokeAll(tasks);
 
-        long total = 0;
-        for (Future<Long> f : results) {
-            total += f.get();
-        }
-        System.out.println("invokeAll total: " + total);
+//        long total = 0;
+//        for (Future<Long> f : results) {
+//            total += f.get();
+//        }
+//        System.out.println("invokeAll total: " + total);
 
         invokePool.shutdown();
         System.out.println();
