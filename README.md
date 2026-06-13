@@ -61,6 +61,7 @@ Each phase contains detailed lesson files with:
 - [Lesson11: Min and Max](src/phase2/Lesson11_StreamOperations_MinMax.java)
 - [Lesson12: Summary Statistics](src/phase2/Lesson12_StreamOperations_Summary.java)
 - [Lesson13: Parallel Streams](src/phase2/Lesson13_ParallelStreams.java)
+- [Lesson14: Stream Gatherers (Java 24 Preview)](src/phase2/Lesson14_StreamGatherers.java)
 
 ---
 
