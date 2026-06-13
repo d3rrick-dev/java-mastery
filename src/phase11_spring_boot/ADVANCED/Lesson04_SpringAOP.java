@@ -336,6 +336,13 @@ public class Lesson04_SpringAOP {
                INTERVIEW QUESTION:
                    "How does @Transactional work under the hood?
                    Why must @Transactional methods be public?"
+                   
+                   @Transactional works through Spring AOP proxies. When a transactional method is called, the proxy intercepts the call, 
+                   starts a transaction using a PlatformTransactionManager, executes the target method, then commits or rolls back 
+                   depending on whether an exception occurs. Transaction management is therefore not inside the method itself but around it through the proxy.
+                   Transactional methods are typically public because Spring’s proxy mechanism can only intercept methods it can 
+                   override or expose through an interface. Private methods cannot be proxied, and internal self-invocation (this.someTransactionalMethod())
+                   bypasses the proxy entirely, so the transaction advice is never applied.
             
                COMMON MISTAKES:
                    - Self-invocation bypasses proxy
