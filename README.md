@@ -24,6 +24,20 @@ Each phase contains detailed lesson files with:
 
 ## Learning Phases
 
+### Phase 0: Java Fundamentals & Data Types
+**Path:** `src/phase0/`
+
+**Description:** Build a strong foundation in Java data types, memory model, and type system - essential for all Java backend development.
+
+**Lessons:**
+- [Lesson01: Primitive Data Types](src/phase0/Lesson01_PrimitiveDataTypes.java)
+- [Lesson02: Wrapper Classes](src/phase0/Lesson02_WrapperClasses.java)
+- [Lesson03: Java Memory Model](src/phase0/Lesson03_MemoryModel.java)
+- [Lesson04: Type Casting](src/phase0/Lesson04_TypeCasting.java)
+- [Lesson05: Interview Questions & Edge Cases](src/phase0/Lesson05_InterviewQuestions.java)
+
+---
+
 ### Phase 1: Functional Programming
 **Path:** `src/phase1/`
 
@@ -335,7 +349,8 @@ Each phase contains detailed lesson files with:
 
 ## Progress Tracking
 
-### Core Java Fundamentals
+### Java Fundamentals
+- [ ] Phase 0: Java Fundamentals & Data Types
 - [x] Phase 1: Functional Programming
 - [x] Phase 2: Java Streams Fundamentals
 - [x] Phase 3: Advanced Streams
@@ -365,8 +380,8 @@ Each phase contains detailed lesson files with:
 
 ## Recommended Learning Order
 
-1. **Start Here:** Phase 1 (Functional Programming) - Build foundation
-2. **Core Skill:** Phase 2 & 3 (Streams) - Essential for modern Java
+1. **Start Here:** Phase 0 (Java Fundamentals) - Build foundation
+2. **Core Skill:** Phase 1 & 2 (Functional Programming + Streams) - Essential for modern Java
 3. **Data Structures:** Phase 4 (Collections) - Know your tools
 4. **Practice:** Phase 5 & 6 (DSA Patterns + Interview Problems) - Apply knowledge
 5. **Concurrency:** Phase 7 & 8 - Critical for backend systems
@@ -405,6 +420,12 @@ By completing this roadmap, you will be able to:
 ├── src/
 │   ├── common/
 │   │   └── Employee.java
+│   ├── phase0/                    # Java Fundamentals & Data Types
+│   │   ├── Lesson01_PrimitiveDataTypes.java
+│   │   ├── Lesson02_WrapperClasses.java
+│   │   ├── Lesson03_MemoryModel.java
+│   │   ├── Lesson04_TypeCasting.java
+│   │   └── Lesson05_InterviewQuestions.java
 │   ├── phase1/                    # Functional Programming
 │   │   ├── Lesson01_WhatIsFunctionalProgramming.java
 │   │   ├── Lesson02_LambdaExpressions.java
