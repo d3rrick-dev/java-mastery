@@ -257,6 +257,35 @@ Each phase contains detailed lesson files with:
 
 ---
 
+### Phase 11.5: Advanced Spring & Spring Boot
+**Path:** `src/phase11_spring_boot/ADVANCED/`
+
+**Description:** Advanced Spring Boot concepts for intermediate-to-senior Java backend engineers, covering production patterns, distributed systems, and interview-focused topics.
+
+**Lessons:**
+- [Lesson01: Spring Core Fundamentals](src/phase11_spring_boot/ADVANCED/Lesson01_SpringCoreFundamentals.java)
+- [Lesson02: Spring Configuration](src/phase11_spring_boot/ADVANCED/Lesson02_SpringConfiguration.java)
+- [Lesson03: Advanced Dependency Injection](src/phase11_spring_boot/ADVANCED/Lesson03_AdvancedDependencyInjection.java)
+- [Lesson04: Spring AOP](src/phase11_spring_boot/ADVANCED/Lesson04_SpringAOP.java)
+- [Lesson05: Spring Boot Internals](src/phase11_spring_boot/ADVANCED/Lesson05_SpringBootInternals.java)
+- [Lesson06: Spring Events](src/phase11_spring_boot/ADVANCED/Lesson06_SpringEvents.java)
+- [Lesson07: Spring Transactions](src/phase11_spring_boot/ADVANCED/Lesson07_SpringTransactions.java)
+- [Lesson08: Spring Caching](src/phase11_spring_boot/ADVANCED/Lesson08_SpringCaching.java)
+- [Lesson09: Spring Scheduling & Async Processing](src/phase11_spring_boot/ADVANCED/Lesson09_SpringSchedulingAsync.java)
+- [Lesson10: Spring Security (Advanced)](src/phase11_spring_boot/ADVANCED/Lesson10_SpringSecurityAdvanced.java)
+- [Lesson11: Spring Data JPA & Hibernate](src/phase11_spring_boot/ADVANCED/Lesson11_SpringDataJPAHibernate.java)
+- [Lesson12: Observability & Production Readiness](src/phase11_spring_boot/ADVANCED/Lesson12_ObservabilityProduction.java)
+- [Lesson13: Messaging & Event-Driven Systems](src/phase11_spring_boot/ADVANCED/Lesson13_MessagingEventDriven.java)
+- [Lesson14: Resilience Patterns](src/phase11_spring_boot/ADVANCED/Lesson14_ResiliencePatterns.java)
+- [Lesson15: Microservices with Spring](src/phase11_spring_boot/ADVANCED/Lesson15_MicroservicesSpring.java)
+- [Lesson16: Testing (Advanced)](src/phase11_spring_boot/ADVANCED/Lesson16_TestingAdvanced.java)
+- [Lesson17: Deployment & Production](src/phase11_spring_boot/ADVANCED/Lesson17_DeploymentProduction.java)
+- [Lesson18: Microservices Deep Dive](src/phase11_spring_boot/ADVANCED/Lesson18_MicroservicesSpringDeepDive.java)
+- [Lesson19: Testing Advanced Deep Dive](src/phase11_spring_boot/ADVANCED/Lesson19_TestingAdvancedDeepDive.java)
+- [Lesson20: Deployment & Production](src/phase11_spring_boot/ADVANCED/Lesson20_DeploymentAndProduction.java)
+
+---
+
 ### Phase 12: JVM Internals & Backend Concepts
 **Path:** `src/phase11/`
 
@@ -321,6 +350,7 @@ Each phase contains detailed lesson files with:
 - [x] Phase 9: Modern Java
 - [x] Phase 10: Collections Internals
 - [x] Phase 11: Spring Boot Backend Engineering
+- [ ] Phase 11.5: Advanced Spring & Spring Boot
 - [x] Phase 12: JVM Internals & Backend Concepts
 
 ### Interview Preparation
@@ -342,8 +372,9 @@ Each phase contains detailed lesson files with:
 6. **Modern Java:** Phase 9 - Write idiomatic Java 8+ code
 7. **Deep Dive:** Phase 10 (Collections Internals) - Understand trade-offs
 8. **Backend Engineering:** Phase 11 (Spring Boot) - Build real systems
-9. **JVM Mastery:** Phase 12 (JVM Internals) - Optimize and debug
-10. **Interview Prep:** Phase 13 - Practice common questions
+9. **Advanced Spring:** Phase 11.5 (Advanced Spring Boot) - Production patterns & distributed systems
+10. **JVM Mastery:** Phase 12 (JVM Internals) - Optimize and debug
+11. **Interview Prep:** Phase 13 - Practice common questions
 
 ---
 
@@ -392,6 +423,9 @@ By completing this roadmap, you will be able to:
 │   ├── phase11_spring_boot/       # Spring Boot Backend Engineering
 │   │   ├── Lesson01_SpringCoreConcepts.java
 │   │   └── ...
+│   │   ├── ADVANCED/                # Advanced Spring & Spring Boot
+│   │   │   ├── Lesson01_SpringCoreFundamentals.java
+│   │   │   └── ...
 │   └── phase12/                   # Interview Questions
 │       ├── BEGINNER/
 │       │   ├── Lesson01_WhatIsStringImmutable.java
