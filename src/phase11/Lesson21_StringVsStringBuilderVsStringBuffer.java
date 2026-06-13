@@ -3,123 +3,179 @@ package phase11;
 /**
  * LESSON 21: STRING VS STRINGBUILDER VS STRINGBUFFER
  *
- * ============================================================
- * 1. CONCEPT IN SIMPLE TERMS
- * ============================================================
- * String: Immutable, thread-safe
- * StringBuilder: Mutable, NOT thread-safe, faster
- * StringBuffer: Mutable, thread-safe (synchronized), slower
+ * Phase 12: JVM Internals & Backend Concepts
  *
- * ============================================================
- * 2. WHY IT EXISTS
- * ============================================================
- * - String: For immutable text
- * - StringBuilder: For single-threaded mutable text
- * - StringBuffer: For multi-threaded mutable text
+ * This lesson covers:
+ * 1. String immutability
+ * 2. StringBuilder
+ * 3. StringBuffer
+ * 4. Performance comparison
+ * 5. Interview questions
  */
 
 public class Lesson21_StringVsStringBuilderVsStringBuffer {
-
     public static void main(String[] args) {
-        System.out.println("=== STRING VS STRINGBUILDER VS STRINGBUFFER ===\n");
-
-        // ============================================================
-        // EXAMPLE 1: String immutability
-        // ============================================================
-        System.out.println("--- Example 1: String Immutability ---\n");
-
-        String s = "hello";
-        s = s.concat(" world");  // Creates NEW string
-
-        System.out.println("Original: hello");
-        System.out.println("After concat: " + s);
-        System.out.println("String is immutable - creates new object");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 2: StringBuilder
-        // ============================================================
-        System.out.println("--- Example 2: StringBuilder ---\n");
-
-        StringBuilder sb = new StringBuilder("hello");
-        sb.append(" world");  // Modifies SAME object
-
-        System.out.println("StringBuilder: " + sb);
-        System.out.println("Mutable - modifies same object");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 3: StringBuffer
-        // ============================================================
-        System.out.println("--- Example 3: StringBuffer ---\n");
-
-        StringBuffer sbf = new StringBuffer("hello");
-        sbf.append(" world");  // Thread-safe modification
-
-        System.out.println("StringBuffer: " + sbf);
-        System.out.println("Thread-safe but slower (synchronized)");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 4: Performance comparison
-        // ============================================================
-        System.out.println("--- Example 4: Performance ---\n");
-
-        int iterations = 10000;
-
-        // String concatenation
-        long start = System.nanoTime();
-        String result = "";
-        for (int i = 0; i < iterations; i++) {
-            result += i;
-        }
-        long stringTime = System.nanoTime() - start;
-
-        // StringBuilder
-        start = System.nanoTime();
-        StringBuilder sbResult = new StringBuilder();
-        for (int i = 0; i < iterations; i++) {
-            sbResult.append(i);
-        }
-        long sbTime = System.nanoTime() - start;
-
-        // StringBuffer
-        start = System.nanoTime();
-        StringBuffer sbfResult = new StringBuffer();
-        for (int i = 0; i < iterations; i++) {
-            sbfResult.append(i);
-        }
-        long sbfTime = System.nanoTime() - start;
-
-        System.out.println("String concatenation: " + stringTime / 1_000_000 + " ms");
-        System.out.println("StringBuilder: " + sbTime / 1_000_000 + " ms");
-        System.out.println("StringBuffer: " + sbfTime / 1_000_000 + " ms");
-        System.out.println("StringBuilder is fastest!");
-        System.out.println();
+        System.out.println("""
+            === STRING VS STRINGBUILDER VS STRINGBUFFER ===
+            
+            1. STRING IMMUABILITY
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               String objects cannot be changed after creation.
+            
+               WHY IT EXISTS:
+               - Thread safety
+               - Security
+               - Hash code caching
+            
+               SIMPLE EXAMPLE:
+                   String s = "hello";
+                   s = s.concat(" world");  // Creates NEW string
+                   
+                   // Original "hello" still exists
+                   // s now points to "hello world"
+                   // String is immutable
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A configuration key:
+                   // Safe to share across threads
+                   // Can be used as HashMap key
+                   // Hash code cached
+                   private static final String CONFIG_KEY = "app.config";
+            
+               INTERVIEW QUESTION:
+                   "Why is String immutable?
+                   What are the benefits?"
+            
+               COMMON MISTAKES:
+                   - Not understanding immutability
+                   - String concatenation in loops
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            2. STRINGBUILDER
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Mutable sequence of characters, not thread-safe.
+            
+               WHY IT EXISTS:
+               - Efficient string building
+               - Single-threaded performance
+            
+               SIMPLE EXAMPLE:
+                   StringBuilder sb = new StringBuilder("hello");
+                   sb.append(" world");  // Modifies SAME object
+                   sb.append(123);
+                   sb.reverse();
+                   
+                   // Features:
+                   // - Mutable
+                   // - NOT thread-safe
+                   // - Faster than StringBuffer
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A JSON builder:
+                   StringBuilder json = new StringBuilder();
+                   json.append("{\"name\":\"").append(user.getName()).append("\"}");
+            
+               INTERVIEW QUESTION:
+                   "What is StringBuilder?
+                   When should you use it?"
+            
+               COMMON MISTAKES:
+                   - Not using in loops
+                   - Sharing between threads
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            3. STRINGBUFFER
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Mutable sequence of characters, thread-safe.
+            
+               WHY IT EXISTS:
+               - Multi-threaded string building
+               - Legacy compatibility
+            
+               SIMPLE EXAMPLE:
+                   StringBuffer sbf = new StringBuffer("hello");
+                   sbf.append(" world");  // Thread-safe modification
+                   
+                   // Features:
+                   // - Mutable
+                   // - Thread-safe (synchronized)
+                   // - Slower than StringBuilder
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A shared log buffer (rare):
+                   private final StringBuffer logBuffer = new StringBuffer();
+                   
+                   public void log(String message) {
+                       logBuffer.append(message).append("\n");
+                   }
+            
+               INTERVIEW QUESTION:
+                   "What is the difference between StringBuilder and StringBuffer?
+                   When would you use StringBuffer?"
+            
+               COMMON MISTAKES:
+                   - Using StringBuffer unnecessarily
+                   - Not understanding synchronization
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            4. PERFORMANCE COMPARISON
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               StringBuilder is fastest, String is slowest for building.
+            
+               WHY IT EXISTS:
+               - Performance optimization
+               - Memory efficiency
+            
+               SIMPLE EXAMPLE:
+                   // String concatenation in loop (SLOW):
+                   String result = "";
+                   for (int i = 0; i < 10000; i++) {
+                       result += i;  // Creates new StringBuilder each time!
+                   }
+                   
+                   // StringBuilder (FAST):
+                   StringBuilder sb = new StringBuilder();
+                   for (int i = 0; i < 10000; i++) {
+                       sb.append(i);  // Modifies same object
+                   }
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A CSV generator:
+                   // WRONG:
+                   String csv = "";
+                   for (Record r : records) {
+                       csv += r.toCsv() + "\n";
+                   }
+                   
+                   // RIGHT:
+                   StringBuilder csv = new StringBuilder();
+                   for (Record r : records) {
+                       csv.append(r.toCsv()).append("\n");
+                   }
+            
+               INTERVIEW QUESTION:
+                   "Why is StringBuilder faster than String concatenation?
+                   What happens with += in a loop?"
+            
+               COMMON MISTAKES:
+                   - String concatenation in loops
+                   - Not understanding compiler optimization
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            SUMMARY:
+            String types are essential for:
+            - Performance optimization
+            - Memory management
+            - Thread safety
+            - Efficient string handling
+            """);
     }
-
-    // ============================================================
-    // STRING VS STRINGBUILDER VS STRINGBUFFER DETAILS
-    // ============================================================
-    /*
-     * Comparison:
-     *
-     * Feature         | String    | StringBuilder | StringBuffer
-     * ----------------|-----------|---------------|-------------
-     * Mutability      | Immutable | Mutable       | Mutable
-     * Thread Safety   | Yes       | No            | Yes
-     * Performance     | Slow      | Fast          | Slower
-     * Since           | Java 1    | Java 5        | Java 1
-     * Synchronized    | N/A       | No            | Yes
-     *
-     * When to use:
-     * - String: Fixed text, keys, constants
-     * - StringBuilder: Single-threaded, mutable text
-     * - StringBuffer: Multi-threaded, mutable text (rare)
-     *
-     * String concatenation (+):
-     * - Compiler converts to StringBuilder
-     * - In loops: creates new StringBuilder each iteration
-     * - Use explicit StringBuilder in loops
-     */
 }

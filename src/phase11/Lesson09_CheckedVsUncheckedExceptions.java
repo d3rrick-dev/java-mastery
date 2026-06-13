@@ -3,129 +3,141 @@ package phase11;
 /**
  * LESSON 9: CHECKED VS UNCHECKED EXCEPTIONS
  *
- * ============================================================
- * 1. CONCEPT IN SIMPLE TERMS
- * ============================================================
- * Checked: Compiler forces you to handle (IOException)
- * Unchecked: Compiler doesn't care (NullPointerException)
- * Like seatbelt reminder (checked) vs speed limit sign (unchecked).
+ * Phase 12: JVM Internals & Backend Concepts
  *
- * ============================================================
- * 2. WHY IT EXISTS
- * ============================================================
- * - Checked: Force handling of recoverable errors
- * - Unchecked: Programming errors, not recoverable
+ * This lesson covers:
+ * 1. Checked exceptions
+ * 2. Unchecked exceptions
+ * 3. When to use each
+ * 4. Interview questions
  */
 
 public class Lesson09_CheckedVsUncheckedExceptions {
-
     public static void main(String[] args) {
-        System.out.println("=== CHECKED VS UNCHECKED EXCEPTIONS ===\n");
-
-        // ============================================================
-        // EXAMPLE 1: Checked exception
-        // ============================================================
-        System.out.println("--- Example 1: Checked Exception ---\n");
-
-        System.out.println("Checked exceptions extend Exception (not RuntimeException)");
-        System.out.println("Compiler requires handling:");
-        System.out.println();
-        System.out.println("  // Must catch or declare:");
-        System.out.println("  public void readFile() throws IOException {");
-        System.out.println("    FileInputStream fis = new FileInputStream(\"file.txt\");");
-        System.out.println("  }");
-        System.out.println();
-        System.out.println("  // OR catch:");
-        System.out.println("  try {");
-        System.out.println("    readFile();");
-        System.out.println("  } catch (IOException e) {");
-        System.out.println("    // handle");
-        System.out.println("  }");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 2: Unchecked exception
-        // ============================================================
-        System.out.println("--- Example 2: Unchecked Exception ---\n");
-
-        System.out.println("Unchecked exceptions extend RuntimeException");
-        System.out.println("Compiler does NOT require handling:");
-        System.out.println();
-        System.out.println("  public void divide(int a, int b) {");
-        System.out.println("    int result = a / b;  // ArithmeticException if b=0");
-        System.out.println("  }");
-        System.out.println();
-        System.out.println("  // No compile error if not caught");
-        System.out.println("  divide(10, 0);  // Throws at runtime");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 3: Common checked exceptions
-        // ============================================================
-        System.out.println("--- Example 3: Common Checked Exceptions ---\n");
-
-        System.out.println("Checked:");
-        System.out.println("  - IOException (file/network errors)");
-        System.out.println("  - SQLException (database errors)");
-        System.out.println("  - ClassNotFoundException (class loading)");
-        System.out.println("  - InterruptedException (thread interruption)");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 4: Common unchecked exceptions
-        // ============================================================
-        System.out.println("--- Example 4: Common Unchecked Exceptions ---\n");
-
-        System.out.println("Unchecked (RuntimeException):");
-        System.out.println("  - NullPointerException (null reference)");
-        System.out.println("  - IllegalArgumentException (invalid argument)");
-        System.out.println("  - IndexOutOfBoundsException (invalid index)");
-        System.out.println("  - IllegalStateException (invalid state)");
-        System.out.println("  - ArithmeticException (math error)");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 5: When to use which
-        // ============================================================
-        System.out.println("--- Example 5: When to Use Which ---\n");
-
-        System.out.println("Use CHECKED when:");
-        System.out.println("  - Error is recoverable");
-        System.out.println("  - Caller should handle it");
-        System.out.println("  - External condition (IO, network, DB)");
-        System.out.println();
-        System.out.println("Use UNCHECKED when:");
-        System.out.println("  - Programming error");
-        System.out.println("  - Not recoverable");
-        System.out.println("  - Caller can't do anything about it");
-        System.out.println("  - Violates contract (null, illegal arg)");
-        System.out.println();
+        System.out.println("""
+            === CHECKED VS UNCHECKED EXCEPTIONS ===
+            
+            1. CHECKED EXCEPTIONS
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Compiler forces handling of these exceptions.
+            
+               WHY IT EXISTS:
+               - Force handling of recoverable errors
+               - API contract clarity
+            
+               SIMPLE EXAMPLE:
+                   // Must catch or declare:
+                   public void readFile() throws IOException {
+                       FileInputStream fis = new FileInputStream("file.txt");
+                   }
+                   
+                   // OR catch:
+                   try {
+                       readFile();
+                   } catch (IOException e) {
+                       // handle
+                   }
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A file upload service:
+                   - IOException for file operations
+                   - Caller must handle disk full, permissions
+                   - Clear error handling contract
+            
+               INTERVIEW QUESTION:
+                   "Why are checked exceptions controversial?
+                   What are the pros and cons?"
+            
+               COMMON MISTAKES:
+                   - Not declaring throws
+                   - Empty catch blocks
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            2. UNCHECKED EXCEPTIONS
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Compiler doesn't require handling of these exceptions.
+            
+               WHY IT EXISTS:
+               - Programming errors
+               - Not recoverable
+            
+               SIMPLE EXAMPLE:
+                   public void divide(int a, int b) {
+                       int result = a / b;  // ArithmeticException if b=0
+                   }
+                   
+                   // No compile error if not caught
+                   divide(10, 0);  // Throws at runtime
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A validation method:
+                   - IllegalArgumentException for null input
+                   - Programming error, caller can't recover
+                   - Let it propagate to top level
+            
+               INTERVIEW QUESTION:
+                   "Should you catch RuntimeException?
+                   When is it appropriate?"
+            
+               COMMON MISTAKES:
+                   - Catching all RuntimeExceptions
+                   - Not logging errors
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            3. WHEN TO USE WHICH
+               ─────────────────────────────────────────────────────────────────────
+               USE CHECKED WHEN:
+                   - Error is recoverable
+                   - Caller should handle it
+                   - External condition (IO, network, DB)
+                   - Expected in normal flow
+            
+               USE UNCHECKED WHEN:
+                   - Programming error
+                   - Not recoverable
+                   - Caller can't do anything about it
+                   - Violates contract (null, illegal arg)
+            
+               SIMPLE EXAMPLE:
+                   // Checked: Database connection failure
+                   public User findUser(Long id) throws SQLException {
+                       return userRepository.findById(id);
+                   }
+                   
+                   // Unchecked: Invalid ID
+                   public User findUser(Long id) {
+                       if (id == null) {
+                           throw new IllegalArgumentException("ID cannot be null");
+                       }
+                       return userRepository.findById(id);
+                   }
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A payment service:
+                   - Checked: PaymentGatewayTimeoutException
+                   - Unchecked: InvalidAmountException
+                   - Clear separation of concerns
+            
+               INTERVIEW QUESTION:
+                   "Design a custom exception hierarchy for a banking application.
+                   Which would be checked vs unchecked?"
+            
+               COMMON MISTAKES:
+                   - Using checked for all exceptions
+                   - Not following conventions
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            SUMMARY:
+            Exception types are essential for:
+            - API design
+            - Error handling strategy
+            - Code maintainability
+            - Debugging
+            """);
     }
-
-    // ============================================================
-    // CHECKED VS UNCHECKED DETAILS
-    // ============================================================
-    /*
-     * Exception Hierarchy:
-     *
-     * Throwable
-     *   |-- Exception (checked)
-     *   |     |-- IOException
-     *   |     |-- SQLException
-     *   |     |-- ClassNotFoundException
-     *   |     |-- CustomException
-     *   |
-     *   |-- RuntimeException (unchecked)
-     *         |-- NullPointerException
-     *         |-- IllegalArgumentException
-     *         |-- IndexOutOfBoundsException
-     *         |-- IllegalStateException
-     *
-     * Best Practices:
-     * - Use checked for recoverable, expected errors
-     * - Use unchecked for programming errors
-     * - Don't catch Exception or Throwable
-     * - Don't swallow exceptions (empty catch)
-     * - Always log exceptions
-     */
 }

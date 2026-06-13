@@ -165,9 +165,9 @@ public class Lesson08_CompletableFuturePipelines {
             System.out.println("1. Validating order");
             return "order-456";
         })
-        .thenCompose(orderId -> validateOrderAsync(orderId))
-        .thenCompose(order -> fetchInventoryAsync(order))
-        .thenCompose(inventory -> processPaymentAsync(inventory))
+        .thenCompose(Lesson08_CompletableFuturePipelines::validateOrderAsync)
+        .thenCompose(Lesson08_CompletableFuturePipelines::fetchInventoryAsync)
+        .thenCompose(Lesson08_CompletableFuturePipelines::processPaymentAsync)
         .thenApply(receipt -> {
             System.out.println("5. Order complete: " + receipt);
             return receipt;

@@ -3,108 +3,219 @@ package phase11;
 /**
  * LESSON 2: HEAP VS STACK
  *
- * ============================================================
- * 1. CONCEPT IN SIMPLE TERMS
- * ============================================================
- * Stack: Fast, thread-private, stores primitives and references
- * Heap: Slower, shared, stores actual objects
- * Like a desk (stack) vs warehouse (heap).
+ * Phase 12: JVM Internals & Backend Concepts
  *
- * ============================================================
- * 2. WHY IT EXISTS
- * ============================================================
- * - Stack: Fast allocation/deallocation, method frames
- * - Heap: Dynamic memory, shared objects, GC managed
+ * This lesson covers:
+ * 1. Stack memory
+ * 2. Heap memory
+ * 3. Memory allocation
+ * 4. Stack overflow
+ * 5. Memory leak patterns
  */
 
 public class Lesson02_HeapVsStack {
-
     public static void main(String[] args) {
-        System.out.println("=== HEAP VS STACK ===\n");
-
-        // ============================================================
-        // EXAMPLE 1: Stack memory
-        // ============================================================
-        System.out.println("--- Example 1: Stack Memory ---\n");
-
-        int primitive = 42;  // Stored on stack
-        String reference = "hello";  // Reference on stack, object on heap
-
-        System.out.println("Primitive '42' stored on stack");
-        System.out.println("Reference 'hello' stored on stack");
-        System.out.println("String object stored on heap");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 2: Heap memory
-        // ============================================================
-        System.out.println("--- Example 2: Heap Memory ---\n");
-
-        Person person = new Person("Alice", 30);  // Object on heap
-        System.out.println("Person object on heap: " + person);
-        System.out.println("Reference 'person' on stack");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 3: Memory allocation visualization
-        // ============================================================
-        System.out.println("--- Example 3: Memory Layout ---\n");
-
-        System.out.println("Stack (Thread 1):");
-        System.out.println("  +------------------+");
-        System.out.println("  | main() frame     |");
-        System.out.println("  |  primitive: 42   |");
-        System.out.println("  |  reference: 0x1  |----> Heap");
-        System.out.println("  |  person: 0x2     |----> Heap");
-        System.out.println("  +------------------+");
-        System.out.println();
-        System.out.println("Heap (Shared):");
-        System.out.println("  +------------------+");
-        System.out.println("  | 0x1: \"hello\"     |");
-        System.out.println("  | 0x2: Person      |");
-        System.out.println("  |     name: \"Alice\"|");
-        System.out.println("  |     age: 30      |");
-        System.out.println("  +------------------+");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 4: Stack overflow
-        // ============================================================
-        System.out.println("--- Example 4: Stack Overflow ---\n");
-
-        System.out.println("Stack overflow occurs when:");
-        System.out.println("  - Too many nested method calls (recursion)");
-        System.out.println("  - Each call adds a frame to stack");
-        System.out.println("  - Stack size is limited (default ~1MB per thread)");
-        System.out.println();
-        System.out.println("Example: infinite recursion");
-        System.out.println("  void recurse() { recurse(); }  // StackOverflowError");
-        System.out.println();
+        System.out.println("""
+            === HEAP VS STACK ===
+            
+            1. STACK MEMORY
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Stack is thread-private memory for method frames and local variables.
+               It's LIFO (Last In, First Out) - like a stack of plates.
+            
+               WHY IT EXISTS:
+               - Fast allocation/deallocation
+               - Thread-safe (each thread has its own)
+               - Method call management
+            
+               INTERNAL MECHANICS:
+                   - Each method call creates a frame
+                   - Frame contains: local vars, return address, operands
+                   - Frame destroyed when method returns
+                   - Size: ~1MB per thread by default
+            
+               SIMPLE EXAMPLE:
+                   public void methodA() {
+                       int x = 10;           // Stack: primitive
+                       String s = "hello";   // Stack: reference
+                       methodB();            // New frame on stack
+                   }                         // Frame destroyed
+                   
+                   // Stack grows/shrinks with method calls
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A REST endpoint:
+                   - Request parameters: Stack
+                   - Method variables: Stack
+                   - Request object: Heap
+                   - Deep call stacks: Stack overflow risk
+            
+               INTERVIEW QUESTION:
+                   "What is stored on stack? What about heap?
+                   What error occurs when stack is full?"
+            
+               COMMON MISTAKES:
+                   - Infinite recursion
+                   - Not understanding thread-private nature
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            2. HEAP MEMORY
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Heap is shared memory for object storage. It's managed by garbage
+               collection.
+            
+               WHY IT EXISTS:
+               - Dynamic object allocation
+               - Shared between threads
+               - Automatic memory management
+            
+               INTERNAL MECHANICS:
+                   - Young Generation: New objects
+                   - Old Generation: Long-lived objects
+                   - GC algorithms: Serial, Parallel, G1, ZGC
+            
+               SIMPLE EXAMPLE:
+                   public void method() {
+                       String s = new String("hello");  // Heap
+                       int[] arr = new int[1000];       // Heap
+                       // Reference on stack, object on heap
+                   }
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A user service:
+                   - User objects: Heap
+                   - Cache entries: Heap
+                   - Large datasets: Heap
+                   - Memory leaks: Unreferenced objects
+            
+               INTERVIEW QUESTION:
+                   "How does GC work? What are generations?
+                   What error occurs when heap is full?"
+            
+               COMMON MISTAKES:
+                   - Memory leaks
+                   - Not understanding GC roots
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            3. MEMORY ALLOCATION VISUALIZATION
+               ─────────────────────────────────────────────────────────────────────
+               STACK LAYOUT:
+                   +-----------------+
+                   | methodB() frame  |
+                   |  localVar: 5     |
+                   +-----------------+
+                   | methodA() frame  |
+                   |  x: 10           |
+                   |  s: 0x100        |----> Heap
+                   +-----------------+
+                   | main() frame     |
+                   +-----------------+
+            
+               HEAP LAYOUT:
+                   +-----------------+
+                   | 0x100: "hello"  |
+                   +-----------------+
+                   | 0x200: int[1000] |
+                   +-----------------+
+            
+               SIMPLE EXAMPLE:
+                   int x = 42;              // Stack
+                   String s = "hello";      // Stack ref, Heap string
+                   Person p = new Person();   // Stack ref, Heap object
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A request handler:
+                   - Request params: Stack
+                   - Service objects: Heap
+                   - Response: Heap
+            
+               INTERVIEW QUESTION:
+                   "Where is a primitive stored?
+                   Where is an object reference stored?"
+            
+               COMMON MISTAKES:
+                   - Confusing reference and object
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            4. STACK OVERFLOW
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Stack overflow occurs when stack memory is exhausted.
+            
+               CAUSES:
+                   - Infinite recursion
+                   - Very deep call stacks
+                   - Large local variables
+            
+               SIMPLE EXAMPLE:
+                   void recurse() {
+                       recurse();  // StackOverflowError
+                   }
+                   
+                   // Or:
+                   void deepCall(int n) {
+                       if (n > 0) deepCall(n - 1);  // Deep stack
+                   }
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A JSON parser:
+                   - Deeply nested JSON: Stack overflow
+                   - Use iterative parsing
+                   - Increase stack size: -Xss2m
+            
+               INTERVIEW QUESTION:
+                   "How to prevent stack overflow?
+                   What JVM flag controls stack size?"
+            
+               COMMON MISTAKES:
+                   - Not handling deep recursion
+                   - Not understanding stack limits
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            5. HEAP OUT OF MEMORY
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Heap OOM occurs when heap memory is exhausted.
+            
+               CAUSES:
+                   - Memory leaks
+                   - Large object allocation
+                   - Insufficient heap size
+            
+               SIMPLE EXAMPLE:
+                   List<String> list = new ArrayList<>();
+                   while (true) {
+                       list.add("data");  // OutOfMemoryError
+                   }
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A cache service:
+                   - Unbounded cache: OOM
+                   - Use LRU eviction
+                   - Monitor heap usage
+            
+               INTERVIEW QUESTION:
+                   "How to diagnose heap OOM?
+                   What tools can you use?"
+            
+               COMMON MISTAKES:
+                   - Not setting max heap
+                   - Memory leaks in caches
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            SUMMARY:
+            Understanding memory model helps with:
+            - Performance optimization
+            - Memory leak prevention
+            - Debugging OOM issues
+            - Choosing appropriate data structures
+            """);
     }
-
-    // ============================================================
-    // HEAP VS STACK DETAILS
-    // ============================================================
-    /*
-     * Stack Memory:
-     * - Thread-private
-     * - LIFO (Last In, First Out)
-     * - Fast allocation/deallocation
-     * - Contains: primitives, object references, method frames
-     * - Size: Fixed per thread (default ~1MB)
-     * - Error: StackOverflowError
-     *
-     * Heap Memory:
-     * - Shared among threads
-     * - Dynamic allocation
-     * - GC managed
-     * - Contains: actual objects
-     * - Size: Configurable (-Xmx, -Xms)
-     * - Error: OutOfMemoryError
-     *
-     * Allocation:
-     * - Primitives: Stack
-     * - Objects: Heap (reference on stack)
-     * - String literals: String Pool (part of heap)
-     */
 }

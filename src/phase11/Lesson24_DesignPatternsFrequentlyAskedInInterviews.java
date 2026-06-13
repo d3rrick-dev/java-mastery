@@ -3,124 +3,219 @@ package phase11;
 /**
  * LESSON 24: DESIGN PATTERNS FREQUENTLY ASKED IN INTERVIEWS
  *
- * ============================================================
- * 1. CONCEPT IN SIMPLE TERMS
- * ============================================================
- * Design patterns are reusable solutions to common problems.
- * Like recipes for software design.
+ * Phase 12: JVM Internals & Backend Concepts
  *
- * ============================================================
- * 2. WHY IT EXISTS
- * ============================================================
- * - Proven solutions
- * - Common vocabulary
- * - Best practices
- * - Easier communication
+ * This lesson covers:
+ * 1. Creational patterns
+ * 2. Structural patterns
+ * 3. Behavioral patterns
+ * 4. Interview tips
+ * 5. Interview questions
  */
 
 public class Lesson24_DesignPatternsFrequentlyAskedInInterviews {
-
     public static void main(String[] args) {
-        System.out.println("=== DESIGN PATTERNS IN INTERVIEWS ===\n");
-
-        // ============================================================
-        // EXAMPLE 1: Creational patterns
-        // ============================================================
-        System.out.println("--- Example 1: Creational Patterns ---\n");
-
-        System.out.println("1. Singleton:");
-        System.out.println("   - One instance per application");
-        System.out.println("   - Use: Database connections, logging");
-        System.out.println();
-        System.out.println("2. Factory:");
-        System.out.println("   - Create objects without specifying exact class");
-        System.out.println("   - Use: Payment processing, document creation");
-        System.out.println();
-        System.out.println("3. Builder:");
-        System.out.println("   - Construct complex objects step by step");
-        System.out.println("   - Use: Query builders, complex objects");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 2: Structural patterns
-        // ============================================================
-        System.out.println("--- Example 2: Structural Patterns ---\n");
-
-        System.out.println("1. Adapter:");
-        System.out.println("   - Convert interface to another");
-        System.out.println("   - Use: Legacy integration, third-party libs");
-        System.out.println();
-        System.out.println("2. Decorator:");
-        System.out.println("   - Add behavior without modifying class");
-        System.out.println("   - Use: I/O streams, middleware");
-        System.out.println();
-        System.out.println("3. Facade:");
-        System.out.println("   - Simplified interface to complex subsystem");
-        System.out.println("   - Use: API gateway, service layer");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 3: Behavioral patterns
-        // ============================================================
-        System.out.println("--- Example 3: Behavioral Patterns ---\n");
-
-        System.out.println("1. Observer:");
-        System.out.println("   - Notify multiple objects of changes");
-        System.out.println("   - Use: Event handling, pub/sub");
-        System.out.println();
-        System.out.println("2. Strategy:");
-        System.out.println("   - Interchangeable algorithms");
-        System.out.println("   - Use: Sorting, validation, pricing");
-        System.out.println();
-        System.out.println("3. Command:");
-        System.out.println("   - Encapsulate request as object");
-        System.out.println("   - Use: Undo/redo, task queues");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 4: Interview tips
-        // ============================================================
-        System.out.println("--- Example 4: Interview Tips ---\n");
-
-        System.out.println("Common interview questions:");
-        System.out.println("  - When would you use Singleton?");
-        System.out.println("  - How do you implement thread-safe Singleton?");
-        System.out.println("  - Difference between Factory and Abstract Factory?");
-        System.out.println("  - When to use Builder pattern?");
-        System.out.println("  - How does Observer pattern work?");
-        System.out.println("  - Real-world examples of patterns in your code?");
-        System.out.println();
+        System.out.println("""
+            === DESIGN PATTERNS IN INTERVIEWS ===
+            
+            1. CREATIONAL PATTERNS
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Patterns for object creation.
+            
+               WHY IT EXISTS:
+               - Flexible object creation
+               - Encapsulate creation logic
+            
+               SIMPLE EXAMPLE:
+                   // Singleton:
+                   public class DatabaseConnection {
+                       private static final DatabaseConnection INSTANCE = 
+                           new DatabaseConnection();
+                       public static DatabaseConnection getInstance() {
+                           return INSTANCE;
+                       }
+                   }
+                   
+                   // Factory:
+                   public class PaymentFactory {
+                       public Payment create(String type) {
+                           return switch (type) {
+                               case "credit" -> new CreditCardPayment();
+                               case "paypal" -> new PayPalPayment();
+                               default -> throw new IllegalArgumentException();
+                           };
+                       }
+                   }
+                   
+                   // Builder:
+                   User user = User.builder()
+                       .name("Alice")
+                       .email("alice@example.com")
+                       .build();
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A Spring configuration:
+                   @Bean
+                   public DataSource dataSource() {
+                       return DataSourceBuilder.create()
+                           .url(url)
+                           .username(username)
+                           .build();
+                   }
+            
+               INTERVIEW QUESTION:
+                   "What is the Singleton pattern?
+                   How to implement thread-safe Singleton?"
+            
+               COMMON MISTAKES:
+                   - Not understanding double-checked locking
+                   - Eager vs lazy initialization
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            2. STRUCTURAL PATTERNS
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Patterns for class/object composition.
+            
+               WHY IT EXISTS:
+               - Flexible composition
+               - Interface adaptation
+            
+               SIMPLE EXAMPLE:
+                   // Adapter:
+                   public class ThirdPartyAdapter implements OurInterface {
+                       private final ThirdPartyService service;
+                       public void doWork() {
+                           service.thirdPartyMethod();
+                       }
+                   }
+                   
+                   // Decorator:
+                   public class LoggingStream extends InputStream {
+                       private final InputStream source;
+                       public int read() {
+                           log("Reading");
+                           return source.read();
+                       }
+                   }
+                   
+                   // Facade:
+                   public class OrderFacade {
+                       public void placeOrder(OrderRequest req) {
+                           inventory.check(req);
+                           payment.process(req);
+                           notification.send(req);
+                       }
+                   }
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A Spring Data repository:
+                   // Facade for data access
+                   // Hides JPA/Hibernate complexity
+                   public interface UserRepository extends JpaRepository<User, Long> {}
+            
+               INTERVIEW QUESTION:
+                   "What is the difference between Adapter and Decorator?
+                   When would you use Facade?"
+            
+               COMMON MISTAKES:
+                   - Not understanding intent
+                   - Confusing patterns
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            3. BEHAVIORAL PATTERNS
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Patterns for object interaction.
+            
+               WHY IT EXISTS:
+               - Communication patterns
+               - Responsibility distribution
+            
+               SIMPLE EXAMPLE:
+                   // Observer:
+                   public class EventBus {
+                       private final List<EventListener> listeners = new ArrayList<>();
+                       public void publish(Event e) {
+                           listeners.forEach(l -> l.onEvent(e));
+                       }
+                   }
+                   
+                   // Strategy:
+                   public class Sorter {
+                       private final SortStrategy strategy;
+                       public void sort(List<T> list) {
+                           strategy.sort(list);
+                       }
+                   }
+                   
+                   // Command:
+                   public class TransferCommand implements Command {
+                       public void execute() {
+                           from.debit(amount);
+                           to.credit(amount);
+                       }
+                   }
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A Spring event system:
+                   @EventListener
+                   public void handleOrderCreated(OrderCreatedEvent event) {
+                       // Observer pattern
+                   }
+            
+               INTERVIEW QUESTION:
+                   "How does the Observer pattern work?
+                   Give a real-world example."
+            
+               COMMON MISTAKES:
+                   - Not understanding loose coupling
+                   - Not knowing real examples
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            4. INTERVIEW TIPS
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Prepare for common design pattern questions.
+            
+               WHY IT EXISTS:
+               - Demonstrate design skills
+               - Show experience
+            
+               SIMPLE EXAMPLE:
+                   // Prepare answers for:
+                   // - When to use Singleton?
+                   // - Thread-safe Singleton implementation?
+                   // - Factory vs Abstract Factory?
+                   // - Real-world examples?
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A real example:
+                   "In my last project, I used the Strategy pattern for payment processing.
+                   We had multiple payment providers and needed to switch between them
+                   based on configuration. Strategy allowed us to encapsulate each
+                   provider's logic and switch at runtime."
+            
+               INTERVIEW QUESTION:
+                   "What design patterns have you used?
+                   How would you implement them?"
+            
+               COMMON MISTAKES:
+                   - Not having real examples
+                   - Not understanding trade-offs
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            SUMMARY:
+            Design patterns are essential for:
+            - System design interviews
+            - Code quality
+            - Communication
+            - Best practices
+            """);
     }
-
-    // ============================================================
-    // DESIGN PATTERNS SUMMARY
-    // ============================================================
-    /*
-     * Most Frequently Asked Patterns:
-     *
-     * Creational:
-     * - Singleton: One instance
-     * - Factory: Create objects
-     * - Builder: Complex object construction
-     * - Prototype: Clone objects
-     *
-     * Structural:
-     * - Adapter: Interface conversion
-     * - Decorator: Add behavior
-     * - Facade: Simplified interface
-     * - Proxy: Control access
-     *
-     * Behavioral:
-     * - Observer: Event notification
-     * - Strategy: Algorithm selection
-     * - Command: Encapsulate requests
-     * - Template Method: Algorithm skeleton
-     *
-     * Interview Tips:
-     * 1. Know the pattern's intent
-     * 2. Know when to use it
-     * 3. Know trade-offs
-     * 4. Have real examples ready
-     * 5. Be able to draw UML
-     */
 }

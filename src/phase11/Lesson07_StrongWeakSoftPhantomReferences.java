@@ -6,132 +6,193 @@ import java.util.*;
 /**
  * LESSON 7: STRONG, WEAK, SOFT, AND PHANTOM REFERENCES
  *
- * ============================================================
- * 1. CONCEPT IN SIMPLE TERMS
- * ============================================================
- * Java has 4 reference types with different GC behaviors:
- * - Strong: Normal references, never collected
- * - Weak: Collected when no strong refs
- * - Soft: Collected when memory low
- * - Phantom: Collected after finalization
+ * Phase 12: JVM Internals & Backend Concepts
  *
- * ============================================================
- * 2. WHY IT EXISTS
- * ============================================================
- * - Fine-grained control over object lifecycle
- * - Caching strategies
- * - Resource cleanup
+ * This lesson covers:
+ * 1. Strong references
+ * 2. Weak references
+ * 3. Soft references
+ * 4. Phantom references
+ * 5. ReferenceQueue usage
+ * 6. Interview questions
  */
 
 public class Lesson07_StrongWeakSoftPhantomReferences {
-
     public static void main(String[] args) {
-        System.out.println("=== REFERENCE TYPES ===\n");
-
-        // ============================================================
-        // EXAMPLE 1: Strong Reference
-        // ============================================================
-        System.out.println("--- Example 1: Strong Reference ---\n");
-
-        String strong = new String("strong");
-        System.out.println("Strong reference: " + strong);
-        System.out.println("GC will NOT collect while 'strong' variable exists");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 2: Weak Reference
-        // ============================================================
-        System.out.println("--- Example 2: Weak Reference ---\n");
-
-        WeakReference<String> weak = new WeakReference<>(new String("weak"));
-        System.out.println("Weak reference created: " + weak.get());
-
-        // Suggest GC
-        System.gc();
-        try { Thread.sleep(100); } catch (InterruptedException e) {}
-
-        System.out.println("After GC: " + weak.get());  // Likely null
-        System.out.println("Weak references collected when no strong refs");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 3: Soft Reference
-        // ============================================================
-        System.out.println("--- Example 3: Soft Reference ---\n");
-
-        SoftReference<String> soft = new SoftReference<>(new String("soft"));
-        System.out.println("Soft reference created: " + soft.get());
-        System.out.println("Soft references collected when memory is low");
-        System.out.println("Good for: memory-sensitive caches");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 4: Phantom Reference
-        // ============================================================
-        System.out.println("--- Example 4: Phantom Reference ---\n");
-
-        ReferenceQueue<String> queue = new ReferenceQueue<>();
-        PhantomReference<String> phantom = new PhantomReference<>(
-            new String("phantom"), queue
-        );
-
-        System.out.println("Phantom reference created");
-        System.out.println("phantom.get() always returns null");
-        System.out.println("Added to ReferenceQueue after finalization");
-        System.out.println("Used for: cleanup after object death");
-        System.out.println();
-
-        // ============================================================
-        // EXAMPLE 5: ReferenceQueue usage
-        // ============================================================
-        System.out.println("--- Example 5: ReferenceQueue ---\n");
-
-        ReferenceQueue<Object> refQueue = new ReferenceQueue<>();
-        Map<String, WeakReference<Object>> cache = new HashMap<>();
-
-        for (int i = 0; i < 5; i++) {
-            String key = "key" + i;
-            WeakReference<Object> ref = new WeakReference<>(
-                new Object(), refQueue
-            );
-            cache.put(key, ref);
-        }
-
-        System.out.println("Created 5 weak references in cache");
-        System.out.println("When GC runs, cleared refs go to queue");
-        System.out.println("Process queue to clean up cache entries");
-        System.out.println();
+        System.out.println("""
+            === REFERENCE TYPES ===
+            
+            1. STRONG REFERENCE
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Normal Java references that prevent GC.
+            
+               WHY IT EXISTS:
+               - Default reference type
+               - Object lifecycle control
+            
+               SIMPLE EXAMPLE:
+                   String strong = new String("strong");
+                   // GC will NOT collect while 'strong' variable exists
+                   
+                   strong = null;  // Now eligible for GC
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A service instance:
+                   - Spring bean with strong reference
+                   - Lives for application lifetime
+                   - Not eligible for GC
+            
+               INTERVIEW QUESTION:
+                   "What is a strong reference?
+                   How does it differ from other reference types?"
+            
+               COMMON MISTAKES:
+                   - Not understanding reference strength
+                   - Memory leaks from strong refs
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            2. WEAK REFERENCE
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Collected when no strong references exist.
+            
+               WHY IT EXISTS:
+               - Canonicalizing mappings
+               - Cache implementations
+            
+               SIMPLE EXAMPLE:
+                   WeakReference<String> weak = new WeakReference<>(new String("weak"));
+                   // When no strong refs, GC collects immediately
+                   // weak.get() returns null after collection
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A cache with WeakHashMap:
+                   - Keys are weak references
+                   - Entries auto-removed when key GC'd
+                   - Prevents cache memory leaks
+            
+               INTERVIEW QUESTION:
+                   "When would you use WeakReference?
+                   How does WeakHashMap work internally?"
+            
+               COMMON MISTAKES:
+                   - Not checking for null
+                   - Using for critical data
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            3. SOFT REFERENCE
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Collected only when memory is low (before OOM).
+            
+               WHY IT EXISTS:
+               - Memory-sensitive caches
+               - Prevent OutOfMemoryError
+            
+               SIMPLE EXAMPLE:
+                   SoftReference<String> soft = new SoftReference<>(new String("soft"));
+                   // Kept until memory pressure
+                   // Good for: caches that can be rebuilt
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A memory-sensitive cache:
+                   - Cache entries as soft references
+                   - JVM clears under memory pressure
+                   - Prevents OOM in production
+            
+               INTERVIEW QUESTION:
+                   "How does SoftReference differ from WeakReference?
+                   When to use each?"
+            
+               COMMON MISTAKES:
+                   - Not understanding memory pressure
+                   - Using for non-rebuildable data
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            4. PHANTOM REFERENCE
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Enqueued after finalization, get() always returns null.
+            
+               WHY IT EXISTS:
+               - Cleanup without preventing GC
+               - More flexible than finalize()
+            
+               SIMPLE EXAMPLE:
+                   ReferenceQueue<String> queue = new ReferenceQueue<>();
+                   PhantomReference<String> phantom = new PhantomReference<>(
+                       new String("phantom"), queue
+                   );
+                   // phantom.get() always returns null
+                   // Added to queue after finalization
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A resource cleanup system:
+                   - Phantom ref for native resources
+                   - Cleanup triggered on queue
+                   - No risk of resurrection
+            
+               INTERVIEW QUESTION:
+                   "Why does PhantomReference.get() always return null?
+                   What's the use case?"
+            
+               COMMON MISTAKES:
+                   - Expecting get() to return value
+                   - Not using ReferenceQueue
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            5. REFERENCEQUEUE USAGE
+               ─────────────────────────────────────────────────────────────────────
+               CONCEPT:
+               Queue that receives references when objects are collected.
+            
+               WHY IT EXISTS:
+               - Post-mortem cleanup
+               - Cache entry removal
+            
+               SIMPLE EXAMPLE:
+                   ReferenceQueue<Object> refQueue = new ReferenceQueue<>();
+                   Map<String, WeakReference<Object>> cache = new HashMap<>();
+                   
+                   // Add to cache
+                   WeakReference<Object> ref = new WeakReference<>(
+                       new Object(), refQueue
+                   );
+                   cache.put("key", ref);
+                   
+                   // Clean up collected entries
+                   Reference<?> cleared = refQueue.poll();
+                   if (cleared != null) {
+                       cache.remove("key");
+                   }
+            
+               REAL-WORLD BACKEND EXAMPLE:
+                   A distributed cache cleanup:
+                   - Weak refs to local cache entries
+                   - Queue tracks evicted entries
+                   - Clean up distributed state
+            
+               INTERVIEW QUESTION:
+                   "How would you implement a cache that
+                   automatically removes entries when objects are GC'd?"
+            
+               COMMON MISTAKES:
+                   - Not polling the queue
+                   - Race conditions in cleanup
+            
+            ─────────────────────────────────────────────────────────────────────
+            
+            SUMMARY:
+            Reference types are essential for:
+            - Memory management
+            - Cache implementations
+            - Resource cleanup
+            - JVM tuning
+            """);
     }
-
-    // ============================================================
-    // REFERENCE TYPES DETAILS
-    // ============================================================
-    /*
-     * Reference Types:
-     *
-     * 1. Strong Reference (default)
-     *    - Object obj = new Object();
-     *    - Never collected by GC
-     *    - Prevents GC
-     *
-     * 2. Weak Reference
-     *    - WeakReference<T> ref = new WeakReference<>(obj);
-     *    - Collected when no strong refs
-     *    - Use: WeakHashMap, canonicalizing mappings
-     *
-     * 3. Soft Reference
-     *    - SoftReference<T> ref = new SoftReference<>(obj);
-     *    - Collected when memory low (before OOM)
-     *    - Use: Memory-sensitive caches
-     *
-     * 4. Phantom Reference
-     *    - PhantomReference<T> ref = new PhantomReference<>(obj, queue);
-     *    - get() always returns null
-     *    - Enqueued after finalization
-     *    - Use: Cleanup without preventing GC
-     *
-     * ReferenceQueue:
-     * - Receives references when object is collected
-     * - Used to clean up associated resources
-     */
 }

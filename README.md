@@ -295,9 +295,6 @@ Each phase contains detailed lesson files with:
 - [Lesson15: Microservices with Spring](src/phase11_spring_boot/ADVANCED/Lesson15_MicroservicesSpring.java)
 - [Lesson16: Testing (Advanced)](src/phase11_spring_boot/ADVANCED/Lesson16_TestingAdvanced.java)
 - [Lesson17: Deployment & Production](src/phase11_spring_boot/ADVANCED/Lesson17_DeploymentProduction.java)
-- [Lesson18: Microservices Deep Dive](src/phase11_spring_boot/ADVANCED/Lesson18_MicroservicesSpringDeepDive.java)
-- [Lesson19: Testing Advanced Deep Dive](src/phase11_spring_boot/ADVANCED/Lesson19_TestingAdvancedDeepDive.java)
-- [Lesson20: Deployment & Production](src/phase11_spring_boot/ADVANCED/Lesson20_DeploymentAndProduction.java)
 
 ---
 
@@ -350,7 +347,7 @@ Each phase contains detailed lesson files with:
 ## Progress Tracking
 
 ### Java Fundamentals
-- [ ] Phase 0: Java Fundamentals & Data Types
+- [x] Phase 0: Java Fundamentals & Data Types
 - [x] Phase 1: Functional Programming
 - [x] Phase 2: Java Streams Fundamentals
 - [x] Phase 3: Advanced Streams
@@ -366,7 +363,7 @@ Each phase contains detailed lesson files with:
 - [x] Phase 9: Modern Java
 - [x] Phase 10: Collections Internals
 - [x] Phase 11: Spring Boot Backend Engineering
-- [ ] Phase 11.5: Advanced Spring & Spring Boot
+- [x] Phase 11.5: Advanced Spring & Spring Boot
 - [x] Phase 12: JVM Internals & Backend Concepts
 
 ### Interview Preparation

@@ -1,6 +1,8 @@
 package phase8;
 
 import java.util.*;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.stream.*;
 
 /**
@@ -61,7 +63,7 @@ import java.util.stream.*;
 
 public class Lesson04_ParallelStreamsDeepDive {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         System.out.println("=== PARALLEL STREAMS DEEP DIVE ===\n");
 
         // ============================================================
@@ -71,19 +73,19 @@ public class Lesson04_ParallelStreamsDeepDive {
 
         List<Integer> largeList = IntStream.rangeClosed(1, 1_000_000)
             .boxed()
-            .collect(Collectors.toList());
+            .toList();
 
         // Sequential
         long start = System.nanoTime();
         long seqSum = largeList.stream()
-            .filter(n -> isPrime(n))
+            .filter(Lesson04_ParallelStreamsDeepDive::isPrime)
             .count();
         long seqTime = System.nanoTime() - start;
 
         // Parallel
         start = System.nanoTime();
         long parSum = largeList.parallelStream()
-            .filter(n -> isPrime(n))
+            .filter(Lesson04_ParallelStreamsDeepDive::isPrime)
             .count();
         long parTime = System.nanoTime() - start;
 
@@ -98,7 +100,7 @@ public class Lesson04_ParallelStreamsDeepDive {
 
         List<Integer> smallList = IntStream.rangeClosed(1, 100)
             .boxed()
-            .collect(Collectors.toList());
+            .toList();
 
         start = System.nanoTime();
         smallList.stream()
